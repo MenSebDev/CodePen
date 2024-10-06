@@ -1,0 +1,15 @@
+{
+    "eslint.useFlatConfig": false,
+    "eslint.validate": ["javascript", "json", "jsonc", "typescript", "yaml"],
+    "markdownlint.config": {
+        "extends": ".markdownlintrc"
+    },
+    "json.schemas": [
+        {
+            "fileMatch": [".*rc", "*.jsonc"],
+            "schema": {
+                "allowTrailingCommas": false
+            }
+        }
+    ]
+}
