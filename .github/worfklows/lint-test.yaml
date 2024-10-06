@@ -19,10 +19,12 @@ jobs:
             pull-requests: read
         outputs:
             changes: ${{ steps.filter.outputs.changes }}
-            configs: ${{ steps.filter.outputs.yaml }}
-            docs: ${{ steps.filter.outputs.markdown }}
-            scripts: ${{ steps.filter.outputs.scripts }}
+            json: ${{ steps.filter.outputs.json }}
+            yaml: ${{ steps.filter.outputs.yaml }}
             styles: ${{ steps.filter.outputs.styles }}
+            markdown: ${{ steps.filter.outputs.markdown }}
+            javascript: ${{ steps.filter.outputs.javascript }}
+            typescript: ${{ steps.filter.outputs.typescript }}
         steps:
             - name: Checkout Repository
               uses: actions/checkout@v4
