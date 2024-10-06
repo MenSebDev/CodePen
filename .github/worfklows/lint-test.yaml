@@ -1,0 +1,90 @@
+---
+name: Lint & Test
+# description: Lint and test the project.
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - '*'
+
+jobs:
+    # Filters and outputs each type of changes to trigger
+    # the associated task later in the CI workflow job
+    filter:
+        runs-on: ubuntu-latest
+        permissions:
+            pull-requests: read
+        outputs:
+            changes: ${{ steps.filter.outputs.changes }}
+            configs: ${{ steps.filter.outputs.yaml }}
+            docs: ${{ steps.filter.outputs.markdown }}
+            scripts: ${{ steps.filter.outputs.scripts }}
+            styles: ${{ steps.filter.outputs.styles }}
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+              with:
+                  token: ${{ secrets.TOKEN_PAT }}
+            - name: Filter Changes
+              uses: dorny/paths-filter@v3
+              id: filter
+              with:
+                  filters: |
+                      markdown:
+                        - "**.md"
+                      json:
+                        - ".*rc"
+                        - "**.json"
+                        - "**.jsonc"
+                      yaml:
+                        - "**.yaml"
+                        - "**.yml"
+                      javscript:
+                        - '**.js'
+                        - '**.jsx'
+                      typescript:
+                        - '**.ts'
+                        - '**.tsx'
+                      styles:
+                        - "**.css"
+                        - "**.sass"
+                        - "**.scss"
+
+    # Start if the filter outputs a change from the main branch.
+    ci:
+        needs: filter
+        if: ${{ needs.filter.outputs.changes != '[]' }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            - name: Setup
+              uses: ./.github/actions/setup
+            - name: Install
+              run: npm ci
+            - name: Lint JSON
+              if: ${{ needs.filter.outputs.json == 'true' }}
+              run: npm run lint:json
+            - name: Lint Markdown
+              if: ${{ needs.filter.outputs.markdown == 'true' }}
+              run: npm run lint:markdown
+            - name: Lint JS
+              if: ${{ needs.filter.outputs.javascript == 'true' }}
+              run: npm run lint:js
+            - name: Lint TS
+              if: ${{ needs.filter.outputs.typescript == 'true' }}
+              run: npm run lint:ts
+            - name: Lint Styles
+              if: ${{ needs.filter.outputs.styles == 'true' }}
+              run: npm run lint:styles
+            - name: Lint YAML
+              if: ${{ needs.filter.outputs.yaml == 'true' }}
+              run: npm run lint:yaml
+            - name: Test
+              if: |
+                  ${{ needs.filter.outputs.javascript == 'true' }} || 
+                  ${{ needs.filter.outputs.typescript == 'true' }}
+              run: npm run test

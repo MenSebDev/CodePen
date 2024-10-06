@@ -1,0 +1,13 @@
+# Environment
+.env
+
+# NodeJS
+node_modules
+
+# Tests
+/tests
+/coverage
+
+# Build
+/build
+/dist
