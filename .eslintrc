@@ -1,0 +1,47 @@
+{
+    "env": {
+        "es6": true,
+        "node": true,
+        "jest": true,
+        "browser": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:prettier/recommended",
+        "plugin:json-schema-validator/recommended",
+        "plugin:jsonc/recommended-with-jsonc",
+        "plugin:yml/standard"
+    ],
+    "ignorePatterns": ["!.github"],
+    "overrides": [
+        {
+            "files": [".*rc", "*.json", "*.jsonc"],
+            "parser": "jsonc-eslint-parser"
+        },
+        {
+            "files": ["*.yaml", "*.yml"],
+            "parser": "yaml-eslint-parser",
+            "rules": {
+                "yml/indent": [
+                    "error",
+                    4,
+                    {
+                        "indicatorValueIndent": 2
+                    }
+                ],
+                "yml/quotes": [
+                    "error",
+                    {
+                        "prefer": "single"
+                    }
+                ]
+            }
+        }
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": ["prettier"],
+    "root": true
+}
