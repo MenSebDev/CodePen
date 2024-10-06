@@ -1,0 +1,24 @@
+{
+  "name": "@menseb/codepen",
+  "version": "1.0.0",
+  "description": "Bundle HTML, CSS & JS for the CodePen website.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MenSebDev/CodePen.git"
+  },
+  "keywords": [
+    "codepen",
+    "animation",
+    "sass",
+    "css",
+    "ts",
+    "js",
+    "html"
+  ],
+  "author": "Sébastien Menard",
+  "license": "ISC"
+}
