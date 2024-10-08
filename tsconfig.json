@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "downlevelIteration": false,
+        "esModuleInterop": true,
+        "jsx": "react",
+        "jsxFactory": "jsx",
+        // "jsxFragmentFactory": "fragment",
+        "lib": ["DOM", "ES6"],
+        "module": "ES6",
+        "moduleResolution": "Node",
+        "noEmitHelpers": true,
+        "removeComments": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "sourceMap": false,
+        "target": "ES6",
+        "useDefineForClassFields": true
+    },
+    "exclude": ["node_modules"]
+}
