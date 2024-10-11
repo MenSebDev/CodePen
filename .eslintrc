@@ -48,7 +48,7 @@
         },
         {
             "files": ["*.test.ts"],
-            "plugins": ["testing-library", "jest-dom"],
+            "plugins": ["jest-dom"],
             "extends": ["plugin:jest-dom/recommended"]
         }
     ],
