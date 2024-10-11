@@ -24,7 +24,7 @@
         "lint:ts": "npm run eslint -- **/*.{ts,tsx}",
         "lint:yaml": "npm run eslint -- **/*.{yml,yaml}",
         "prettier": "prettier . \"!**/*.md\"",
-        "test": "",
+        "test": "jest",
         "start": "concurrently \"npm:start:server\" \"npm:start:client\" ",
         "start:client": "webpack serve --config ./webpack.client.js",
         "start:server": "nodemon",
