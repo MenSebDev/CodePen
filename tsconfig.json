@@ -10,13 +10,11 @@
         "noEmitHelpers": true,
         "outDir": "./www",
         "removeComments": true,
-        "rootDir": "./src",
         "skipLibCheck": true,
         "strict": true,
         "sourceMap": false,
         "target": "ES6",
         "useDefineForClassFields": true
     },
-    "include": ["src/**/*"],
     "exclude": ["node_modules", "dist", "build", "tests"]
 }

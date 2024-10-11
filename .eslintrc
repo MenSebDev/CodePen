@@ -17,6 +17,12 @@
     "overrides": [
         {
             "files": ["*.ts"],
+            "parser": "@typescript-eslint/parser",
+            "parserOptions": {
+                "ecmaVersion": 6,
+                "project": "tsconfig.json",
+                "sourceType": "module"
+            },
             "plugins": ["@typescript-eslint"],
             "extends": [
                 "plugin:@typescript-eslint/strict-type-checked",
@@ -52,13 +58,6 @@
             "extends": ["plugin:jest-dom/recommended"]
         }
     ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaVersion": 6,
-        "project": "tsconfig.json",
-        "sourceType": "module"
-    },
-
     "plugins": ["prettier", "jest"],
     "root": true
 }
