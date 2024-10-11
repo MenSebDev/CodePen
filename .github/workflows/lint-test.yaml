@@ -29,7 +29,7 @@ jobs:
             - name: Checkout Repository
               uses: actions/checkout@v4
               with:
-                  token: ${{ secrets.TOKEN_PAT }}
+                  token: ${{ secrets.ORG_PAT }}
             - name: Filter Changes
               uses: dorny/paths-filter@v3
               id: filter
@@ -63,6 +63,8 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
+              with:
+                  token: ${{ secrets.ORG_PAT }}
             - name: Setup
               uses: ./.github/actions/setup
             - name: Install

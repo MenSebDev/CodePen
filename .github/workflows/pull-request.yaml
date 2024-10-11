@@ -3,7 +3,7 @@ name: Validate PR
 # description: Validate a pull request.
 
 on:
-    pull_request_target:
+    pull_request:
         types:
             - opened
             - edited
@@ -17,6 +17,6 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Validate PR title
-            - uses: amannn/action-semantic-pull-request@v5
+              uses: amannn/action-semantic-pull-request@v5
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

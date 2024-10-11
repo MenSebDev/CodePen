@@ -8,12 +8,21 @@
     "extends": [
         "eslint:recommended",
         "plugin:prettier/recommended",
+        "plugin:jest/recommended",
         "plugin:json-schema-validator/recommended",
         "plugin:jsonc/recommended-with-jsonc",
         "plugin:yml/standard"
     ],
     "ignorePatterns": ["!.github"],
     "overrides": [
+        {
+            "files": ["*.ts"],
+            "plugins": ["@typescript-eslint"],
+            "extends": [
+                "plugin:@typescript-eslint/strict-type-checked",
+                "plugin:@typescript-eslint/stylistic-type-checked"
+            ]
+        },
         {
             "files": [".*rc", "*.json", "*.jsonc"],
             "parser": "jsonc-eslint-parser"
@@ -36,12 +45,20 @@
                     }
                 ]
             }
+        },
+        {
+            "files": ["*.test.ts"],
+            "plugins": ["jest-dom"],
+            "extends": ["plugin:jest-dom/recommended"]
         }
     ],
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
-        "ecmaVersion": "latest",
+        "ecmaVersion": 6,
+        "project": "tsconfig.json",
         "sourceType": "module"
     },
-    "plugins": ["prettier"],
+
+    "plugins": ["prettier", "jest"],
     "root": true
 }
