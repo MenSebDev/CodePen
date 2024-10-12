@@ -2,21 +2,27 @@ import path from 'path';
 import dotenv from 'dotenv';
 import { merge } from 'webpack-merge';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import config, { __dirname } from './webpack.config.js';
+import { Configuration as WebpackConfiguration } from 'webpack';
+import { Configuration as DevServerConfiguration } from 'webpack-dev-server';
+import config, { __dirname } from './webpack.config';
 
 dotenv.config();
 
-export default merge(config, {
+const { PORT_CLIENT = '3000', PORT_SERVER = '3001' } = process.env;
+
+const clientConfig: WebpackConfiguration & {
+    devServer: DevServerConfiguration;
+} = {
     devServer: {
         historyApiFallback: true,
         hot: true,
         open: true,
-        port: process.env.PORT_CLIENT,
+        port: PORT_CLIENT,
         proxy: [
             {
                 context: '/api',
-                target: `http://localhost:${process.env.PORT_CLIENT}`,
-                router: () => `http://localhost:${process.env.PORT_SERVER}`,
+                target: `http://localhost:${PORT_CLIENT}`,
+                router: () => `http://localhost:${PORT_SERVER}`,
                 logLevel: 'debug',
             },
         ],
@@ -38,8 +44,13 @@ export default merge(config, {
         },
     },
     plugins: [
-        new BundleAnalyzerPlugin({
-            analyzerMode: process.env.ANALYZER_MODE || 'disabled',
-        }),
+        process.env.ANALYZE === 'true'
+            ? new BundleAnalyzerPlugin({
+                  analyzerMode: 'server',
+                  openAnalyzer: true,
+              })
+            : null,
     ],
-});
+};
+
+export default merge(config, clientConfig);
