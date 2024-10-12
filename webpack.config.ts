@@ -6,7 +6,7 @@ export const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 const config: Configuration = {
     devtool: 'source-map',
-    mode: process.env.NODE_ENV ? 'development' : 'none',
+    mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
     module: {
         rules: [
             {

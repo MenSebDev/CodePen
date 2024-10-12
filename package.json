@@ -26,10 +26,11 @@
         "prettier": "prettier . \"!**/*.md\"",
         "test": "jest",
         "start": "concurrently \"npm:start:server\" \"npm:start:client\" ",
-        "start:client": "webpack serve --config ./webpack.client.js",
+        "start:client": "webpack serve --config ./webpack.client.ts",
         "start:server": "nodemon",
-        "webpack:client": "webpack --config ./webpack.client.js",
-        "webpack:server": "webpack --config ./webpack.server.js"
+        "webpack:analyze": "cross-env ANALYZE=true npm run webpack:client",
+        "webpack:client": "webpack --config ./webpack.client.ts",
+        "webpack:server": "webpack --config ./webpack.server.ts"
     },
     "repository": {
         "type": "git",
@@ -57,6 +58,7 @@
         "@testing-library/jest-dom": "^6.5.0",
         "@testing-library/user-event": "^14.5.2",
         "@types/jest": "^29.5.13",
+        "@types/webpack-bundle-analyzer": "^4.7.0",
         "@typescript-eslint/eslint-plugin": "^8.8.1",
         "@typescript-eslint/parser": "^8.8.1",
         "clipboardy": "^4.0.0",
