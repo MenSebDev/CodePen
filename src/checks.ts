@@ -1,5 +1,5 @@
 import {
-    TagName,
+    Tags,
     AttributeValue,
     Attributes,
     EventType,
@@ -9,7 +9,6 @@ import {
 } from './types';
 
 export function isFloat(value: number) {
-    // return Math.abs(value - Math.floor(value)) > Number.EPSILON;
     return value !== Math.floor(value);
 }
 
@@ -33,7 +32,7 @@ export function isVariable(value: unknown): value is Variable {
 export function isVariables(obj: unknown): obj is Variables {
     if (!isObject(obj)) return false;
 
-    for (const key in Object.keys(obj)) {
+    for (const key of Object.keys(obj)) {
         const value = obj[key];
 
         if (!(isVariable(value) || isVariables(value))) return false;
@@ -42,7 +41,7 @@ export function isVariables(obj: unknown): obj is Variables {
     return true;
 }
 
-export function isAttributeName<Tag extends TagName>(
+export function isAttributeName<Tag extends Tags>(
     name: unknown,
     element: HTMLElementTagNameMap[Tag],
 ): name is keyof Attributes<Tag> {
@@ -57,9 +56,9 @@ export function isAttributeValue(value: unknown): value is AttributeValue {
     );
 }
 
-export function isEventType<Tag extends TagName>(
+export function isEventType(
     type: unknown,
-    element: HTMLElementTagNameMap[Tag],
+    element: HTMLElement,
 ): type is `on${Capitalize<EventType>}` {
     return (
         typeof type === 'string' &&
@@ -74,13 +73,11 @@ export function isEventCallback<Type extends EventType>(
     return typeof callback === 'function';
 }
 
-export function isChild<Tag extends TagName>(
-    child: unknown,
-): child is HTMLElementTagNameMap[Tag] {
+export function isChild(child: unknown): child is HTMLElement {
     return child instanceof Node || typeof child === 'string';
 }
 
-export function isChildren<Tag extends TagName>(
+export function isChildren<Tag extends Tags>(
     name: unknown,
     children: unknown,
 ): children is HTMLElementTagNameMap[Tag][] {

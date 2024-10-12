@@ -24,10 +24,15 @@
                 "sourceType": "module"
             },
             "plugins": ["@typescript-eslint"],
+
             "extends": [
                 "plugin:@typescript-eslint/strict-type-checked",
                 "plugin:@typescript-eslint/stylistic-type-checked"
-            ]
+            ],
+            "rules": {
+                "@typescript-eslint/consistent-type-definitions": "off",
+                "@typescript-eslint/no-inferrable-types": "off"
+            }
         },
         {
             "files": [".*rc", "*.json", "*.jsonc"],

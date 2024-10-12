@@ -1,17 +1,21 @@
-import { JSX } from 'preact';
+export type Tags = keyof HTMLElementTagNameMap;
+export type Elements = HTMLElementTagNameMap[Tags];
 
-export type ElementNode<Tag extends TagName> =
-    | HTMLElementTagNameMap[Tag]
-    | HTMLDivElement
-    | ((index: number) => HTMLElementTagNameMap[Tag] | HTMLDivElement);
+export type ElementNode<Tag extends Tags = 'div'> = HTMLElementTagNameMap[Tag];
+export type ElementCallback<Tag extends Tags = 'div'> = (
+    index: number,
+) => ElementNode<Tag>;
 
 export type Child = string | Node;
 export type Children = Child | Child[];
 
-export type TagName = keyof HTMLElementTagNameMap;
-
 export type AttributeValue = string | number | boolean;
-export type Attributes<Tag extends TagName> = JSX.IntrinsicElements[Tag];
+export type AttributeKeys<E extends Elements> = {
+    [K in keyof E]: E[K] extends AttributeValue ? K : never;
+}[keyof E];
+export type Attributes<Tag extends Tags> = Partial<
+    Pick<HTMLElementTagNameMap[Tag], AttributeKeys<HTMLElementTagNameMap[Tag]>>
+>;
 
 export type EventType = keyof HTMLElementEventMap;
 export type EventCallback<Type extends EventType> = (

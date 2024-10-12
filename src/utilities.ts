@@ -1,9 +1,10 @@
 import {
     Attributes,
     Children,
+    ElementCallback,
     ElementNode,
     EventType,
-    TagName,
+    Tags,
     Variables,
 } from './types';
 import {
@@ -16,24 +17,24 @@ import {
     isProperty,
 } from './checks';
 
-export function createClone<Tag extends TagName>(
-    element: ElementNode<Tag>,
+export function createClone<Tag extends Tags>(
+    element: ElementNode<Tag> | ElementCallback<Tag>,
     index: number = 0,
     deep: boolean = true,
 ) {
     const node = typeof element === 'function' ? element(index) : element;
 
-    return node.cloneNode(deep);
+    return node.cloneNode(deep) as ElementNode<Tag>;
 }
 
-export function createElement<Tag extends TagName = 'div'>(
+export function createElement<Tag extends Tags = 'div'>(
     props: Partial<Attributes<Tag>> & { tag?: Tag; children?: Children } = {},
-): HTMLElementTagNameMap[Tag | 'div'] {
+): ElementNode<Tag> {
     const { tag = 'div', ...rest } = props;
     const attributes = rest as Partial<Attributes<Tag>>;
-    const element = document.createElement(tag);
+    const element = document.createElement(tag) as ElementNode<Tag>;
 
-    for (const name in attributes) {
+    for (const name of keys(attributes)) {
         if (!isProperty(attributes, name)) continue;
 
         const value = attributes[name];
@@ -59,7 +60,7 @@ export function createElement<Tag extends TagName = 'div'>(
     return element;
 }
 
-export function createElements<Tag extends TagName = 'div'>(
+export function createElements<Tag extends Tags = 'div'>(
     length: number = 1,
     element: ElementNode<Tag> = createElement(),
     deep: boolean = true,
@@ -80,7 +81,7 @@ export function cssVariables(variables: Variables, prefix: string = '') {
         const variable = prefix === '' ? key : `${prefix}-${key}`;
 
         if (isAttributeValue(value)) {
-            result.push(`--${variable}:${value}`);
+            result.push(`--${variable}:${value.toString()}`);
         } else if (isObject(value)) {
             result.push(cssVariables(value, variable));
         }
@@ -89,14 +90,16 @@ export function cssVariables(variables: Variables, prefix: string = '') {
     return result.join(';');
 }
 
-export function keys<T extends object>(obj: T): Array<keyof T> {
-    return Object.keys(obj) as Array<keyof T>;
+export function keys<T extends object>(obj: T): Extract<keyof T, string>[] {
+    return Object.keys(obj) as Extract<keyof T, string>[];
 }
 
 export function values<T extends object>(obj: T): [T[keyof T]][] {
     return Object.values(obj) as [T[keyof T]][];
 }
 
-export function entries<T extends object>(obj: T): [keyof T, T[keyof T]][] {
-    return Object.entries(obj) as [keyof T, T[keyof T]][];
+export function entries<T extends object>(
+    obj: T,
+): [Extract<keyof T, string>, T[keyof T]][] {
+    return Object.entries(obj) as [Extract<keyof T, string>, T[keyof T]][];
 }
