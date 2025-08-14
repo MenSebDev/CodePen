@@ -27,7 +27,9 @@
         "test": "jest",
         "start": "concurrently \"npm:start:server\" \"npm:start:client\" ",
         "start:client": "webpack serve --config ./webpack.client.ts",
+        "start:clientts": "ts-node -r tsconfig-paths/register ./node_modules/webpack/bin/webpack.js serve --config ./webpack.client.ts",
         "start:server": "nodemon",
+        "start:test": "tsc ./webpack.client.ts && webpack --config ./webpack.client.js",
         "webpack:analyze": "cross-env ANALYZE=true npm run webpack:client",
         "webpack:client": "webpack --config ./webpack.client.ts",
         "webpack:server": "webpack --config ./webpack.server.ts"
@@ -94,6 +96,7 @@
         "ts-jest": "^29.2.5",
         "ts-loader": "^9.5.1",
         "ts-node": "^10.9.2",
+        "tsconfig-paths": "^4.2.0",
         "tsx": "^4.19.1",
         "typescript": "^5.6.2",
         "webpack": "^5.95.0",

@@ -1,11 +1,13 @@
 {
     "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
         "baseUrl": "./",
         "downlevelIteration": false,
         "esModuleInterop": true,
         "importHelpers": true,
         "lib": ["DOM", "ES6"],
         "module": "ESNext",
+        // "module": "CommonJS",
         "moduleResolution": "Node",
         "noEmitHelpers": true,
         "outDir": "./www",
@@ -14,7 +16,22 @@
         "strict": true,
         "sourceMap": false,
         "target": "ES6",
+        // "target": "ES5",
         "useDefineForClassFields": true
+    },
+    "ts-node": {
+        // "transpileOnly": true,
+        // "require": ["tsconfig-paths/register"]
+        // "compilerOptions": {
+        //     "module": "CommonJS"
+        // }
+
+        "esm": true,
+        "compilerOptions": {
+            "module": "CommonJS",
+            "moduleResolution": "NodeNext",
+            "target": "ES5"
+        }
     },
     "exclude": ["node_modules", "dist", "build", "tests"]
 }

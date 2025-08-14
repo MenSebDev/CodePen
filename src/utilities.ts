@@ -28,7 +28,11 @@ export function createClone<Tag extends Tags>(
 }
 
 export function createElement<Tag extends Tags = 'div'>(
-    props: Partial<Attributes<Tag>> & { tag?: Tag; children?: Children } = {},
+    props: Partial<Attributes<Tag>> & {
+        tag?: Tag;
+        children?: Children;
+        style?: string | CSSStyleDeclaration;
+    } = {},
 ): ElementNode<Tag> {
     const { tag = 'div', ...rest } = props;
     const attributes = rest as Partial<Attributes<Tag>>;
@@ -64,10 +68,10 @@ export function createElements<Tag extends Tags = 'div'>(
     length: number = 1,
     element: ElementNode<Tag> = createElement(),
     deep: boolean = true,
-) {
+): ElementNode<Tag>[] {
     if (length < 1) return [];
 
-    if (length === 1) return createClone(element, 0, deep);
+    if (length === 1) return [createClone(element, 0, deep)];
 
     return Array.from({ length }, (_, index: number) =>
         createClone(element, index, deep),

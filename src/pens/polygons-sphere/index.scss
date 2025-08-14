@@ -1,0 +1,10 @@
+@use '../../styles/utilities.scss' as *;
+@import '../../styles/index.scss';
+
+@include crosshair();
+
+@keyframes rotate {
+    to {
+        transform: rotatez(1turn);
+    }
+}
