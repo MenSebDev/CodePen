@@ -1,0 +1,23 @@
+@function css-var($prefix, $name: '') {
+    @return var(--#{if($name == '', $prefix, #{$prefix}-#{$name})});
+}
+
+@function angle($name: '', $unit: 1deg) {
+    @return calc(css-var(angle, $name) * $unit);
+}
+
+@function to-length($value, $unit: 1vmin) {
+    @return calc(#{$value} * #{$unit});
+}
+
+@function size($name: '', $unit: 1vmin) {
+    @return to-length(css-var(size, $name), $unit);
+}
+
+@function time($name: '', $unit: 1s) {
+    @return calc(css-var(time, $name) * $unit);
+}
+
+@function color($name: '') {
+    @return css-var(color, $name);
+}

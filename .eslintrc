@@ -17,11 +17,22 @@
     "overrides": [
         {
             "files": ["*.ts"],
+            "parser": "@typescript-eslint/parser",
+            "parserOptions": {
+                "ecmaVersion": 6,
+                "project": "tsconfig.json",
+                "sourceType": "module"
+            },
             "plugins": ["@typescript-eslint"],
+
             "extends": [
                 "plugin:@typescript-eslint/strict-type-checked",
                 "plugin:@typescript-eslint/stylistic-type-checked"
-            ]
+            ],
+            "rules": {
+                "@typescript-eslint/consistent-type-definitions": "off",
+                "@typescript-eslint/no-inferrable-types": "off"
+            }
         },
         {
             "files": [".*rc", "*.json", "*.jsonc"],
@@ -48,17 +59,10 @@
         },
         {
             "files": ["*.test.ts"],
-            "plugins": ["testing-library", "jest-dom"],
+            "plugins": ["jest-dom"],
             "extends": ["plugin:jest-dom/recommended"]
         }
     ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaVersion": 6,
-        "project": "tsconfig.json",
-        "sourceType": "module"
-    },
-
     "plugins": ["prettier", "jest"],
     "root": true
 }

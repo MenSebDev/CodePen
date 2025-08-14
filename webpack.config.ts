@@ -1,11 +1,12 @@
 import path from 'path';
 import url from 'url';
+import type { Configuration } from 'webpack';
 
 export const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
-export default {
+const config: Configuration = {
     devtool: 'source-map',
-    mode: process.env.NODE_ENV || 'development',
+    mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
     module: {
         rules: [
             {
@@ -35,3 +36,5 @@ export default {
         // logging: 'verbose',
     },
 };
+
+export default config;

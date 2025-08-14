@@ -1,0 +1,109 @@
+import {
+    Attributes,
+    Children,
+    ElementCallback,
+    ElementNode,
+    EventType,
+    Tags,
+    Variables,
+} from './types';
+import {
+    isAttributeName,
+    isAttributeValue,
+    isChildren,
+    isEventCallback,
+    isEventType,
+    isObject,
+    isProperty,
+} from './checks';
+
+export function createClone<Tag extends Tags>(
+    element: ElementNode<Tag> | ElementCallback<Tag>,
+    index: number = 0,
+    deep: boolean = true,
+) {
+    const node = typeof element === 'function' ? element(index) : element;
+
+    return node.cloneNode(deep) as ElementNode<Tag>;
+}
+
+export function createElement<Tag extends Tags = 'div'>(
+    props: Partial<Attributes<Tag>> & {
+        tag?: Tag;
+        children?: Children;
+        style?: string | CSSStyleDeclaration;
+    } = {},
+): ElementNode<Tag> {
+    const { tag = 'div', ...rest } = props;
+    const attributes = rest as Partial<Attributes<Tag>>;
+    const element = document.createElement(tag) as ElementNode<Tag>;
+
+    for (const name of keys(attributes)) {
+        if (!isProperty(attributes, name)) continue;
+
+        const value = attributes[name];
+
+        if (isEventType(name, element)) {
+            const type = name.slice(2).toLowerCase() as EventType;
+
+            if (isEventCallback<typeof type>(value)) {
+                element.addEventListener(type, value);
+            }
+        } else if (isChildren(name, value)) {
+            const children = Array.isArray(value) ? value : [value];
+
+            element.append(...children);
+        } else if (isAttributeName(name, element) && isAttributeValue(value)) {
+            element.setAttribute(
+                name === 'className' ? 'class' : name,
+                value as string,
+            );
+        }
+    }
+
+    return element;
+}
+
+export function createElements<Tag extends Tags = 'div'>(
+    length: number = 1,
+    element: ElementNode<Tag> = createElement(),
+    deep: boolean = true,
+): ElementNode<Tag>[] {
+    if (length < 1) return [];
+
+    if (length === 1) return [createClone(element, 0, deep)];
+
+    return Array.from({ length }, (_, index: number) =>
+        createClone(element, index, deep),
+    );
+}
+
+export function cssVariables(variables: Variables, prefix: string = '') {
+    const result: string[] = [];
+
+    for (const [key, value] of Object.entries(variables)) {
+        const variable = prefix === '' ? key : `${prefix}-${key}`;
+
+        if (isAttributeValue(value)) {
+            result.push(`--${variable}:${value.toString()}`);
+        } else if (isObject(value)) {
+            result.push(cssVariables(value, variable));
+        }
+    }
+
+    return result.join(';');
+}
+
+export function keys<T extends object>(obj: T): Extract<keyof T, string>[] {
+    return Object.keys(obj) as Extract<keyof T, string>[];
+}
+
+export function values<T extends object>(obj: T): [T[keyof T]][] {
+    return Object.values(obj) as [T[keyof T]][];
+}
+
+export function entries<T extends object>(
+    obj: T,
+): [Extract<keyof T, string>, T[keyof T]][] {
+    return Object.entries(obj) as [Extract<keyof T, string>, T[keyof T]][];
+}
